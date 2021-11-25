@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ScrollModeType } from 'ngx-extended-pdf-viewer';
 
 @Component({
   selector: 'app-page-view-mode',
@@ -7,11 +8,12 @@ import { Component } from '@angular/core';
 })
 export class PageViewModeComponent {
 
-  public page = 5;
+  public page = 1;
 
-  public spreadMode: "off" | "even" | "odd" = "off";
+  public spreadMode: "off" | "even" | "odd" = "even";
+  public scrollMode:ScrollModeType = ScrollModeType.page;
 
-  public showBorders = true;
+  public showBorders = false;
 
   constructor() { }
 }

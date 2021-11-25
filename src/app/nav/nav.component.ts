@@ -22,7 +22,7 @@ export class NavComponent {
 
   public angularVersion = versions.angular;
 
-  public _viewer: string | null = 'ngx-extended-pdf-viewer';
+  public _viewer: string | null = 'bleeding-edge'; // 'ngx-extended-pdf-viewer';
 
   public ngxExtendedPdfViewer = true;
 
