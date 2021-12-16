@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component } from '@angular/core';
 import { NgxExtendedPdfViewerService } from 'ngx-extended-pdf-viewer';
 import { FindState, FindResultMatchesCount } from 'ngx-extended-pdf-viewer';
 
@@ -16,6 +16,7 @@ export class FindComponent {
   public fuzzy = false;
   public highlightAll = false;
   public currentPage = false;
+  private _pageRange = "";
   public matchCase = false;
   public wholeWord = false;
   public ignoreAccents = false;
@@ -26,6 +27,15 @@ export class FindComponent {
   public totalMatches: number | undefined;
 
   public findState: FindState | undefined;
+
+  public get pageRange(): string {
+    return this._pageRange;
+  }
+
+  public set pageRange(pageRange: string) {
+    this._pageRange = pageRange;
+    this.find();
+  }
 
   public get findStateText(): string {
     switch (this.findState) {
@@ -65,7 +75,8 @@ export class FindComponent {
           matchCase: this.matchCase,
           wholeWords: this.wholeWord,
           ignoreAccents: this.ignoreAccents,
-          fuzzySearch: this.fuzzy
+          fuzzySearch: this.fuzzy,
+          pageRange: this.pageRange
         }
       );
     } else {
@@ -76,7 +87,8 @@ export class FindComponent {
           matchCase: this.matchCase,
           wholeWords: this.wholeWord,
           ignoreAccents: this.ignoreAccents,
-          fuzzySearch: this.fuzzy
+          fuzzySearch: this.fuzzy,
+          pageRange: this.pageRange
         })
       ) {
       }
@@ -101,7 +113,7 @@ export class FindComponent {
   }
 
   constructor(
-    private ngxExtendedPdfViewerService: NgxExtendedPdfViewerService
+    private ngxExtendedPdfViewerService: NgxExtendedPdfViewerService, private cdr: ChangeDetectorRef
   ) {}
 
   public updateFindState(result: FindState) {
@@ -111,14 +123,18 @@ export class FindComponent {
   public updateFindMatchesCount(result: FindResultMatchesCount) {
     this.currentMatchNumber = result.current;
     this.totalMatches = result.total;
+    this.cdr.detectChanges();
   }
 
   public onCheckboxClicked() {
     this.ngxExtendedPdfViewerService.find(this._searchtext, {
       highlightAll: this.highlightAll,
+      currentPage: this.currentPage,
       matchCase: this.matchCase,
       wholeWords: this.wholeWord,
-      ignoreAccents: this.ignoreAccents
+      ignoreAccents: this.ignoreAccents,
+      fuzzySearch: this.fuzzy,
+      pageRange: this.pageRange
     });
   }
 
