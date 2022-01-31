@@ -1,6 +1,6 @@
 <div fxLayout="column" fxFill>
-  <div fxLayout="row" fxLayoutAlign="space-between">
-  <mat-card class="distance-16 mat-elevation-z8" fxFlex="40%" style="margin-bottom:20px">
+  <div fxLayout="row" fxLayoutAlign="space-between" *ngIf="!fullscreen">
+  <mat-card class="distance16 mat-elevation-z8" fxFlex="40%" style="margin-bottom:20px">
     <p>
       ngx-extended-pdf-viewer allows you to define your own custom toolbar, menu, and it even allows you to create
       your own sidebar and your own thumbnails.
@@ -13,15 +13,16 @@
       <br />
       <mat-radio-button value="checkbox">radiobutton zoom</mat-radio-button>
       <br />
-      <mat-radio-button value="additional">additional buttons</mat-radio-button>
+      <mat-radio-button value="additional">additional buttons + custom color</mat-radio-button>
       <br />
       <mat-radio-button value="floating">floating zoombar</mat-radio-button>
+      <mat-checkbox class="padding-left" [(ngModel)]="showFreeFloatingBar">show it! (uncheck to hide)</mat-checkbox>
       <br>
       <mat-radio-button value="multi">multiple lines</mat-radio-button>
     </mat-radio-group>
   </mat-card>
   <p></p>
-  <mat-card class="distance-16 mat-elevation-z8" fxFlex="58%">
+  <mat-card class="distance16 mat-elevation-z8" fxFlex="58%">
     <mat-tab-group>
       <mat-tab label="TypeScript">
         <app-ie11-markdown [src]="'/assets/extended-pdf-viewer/custom-toolbar/ts-'+ theme+'.md'"> </app-ie11-markdown>
@@ -32,14 +33,19 @@
       <mat-tab label="additional components" *ngIf="theme=='additional'">
         <app-ie11-markdown [src]="'/assets/extended-pdf-viewer/custom-toolbar/component-new-tab.md'"> </app-ie11-markdown>
       </mat-tab>
-      <mat-tab label="changing the theme dynamically">
+      <mat-tab label="changing the toolbars dynamically">
         <app-ie11-markdown [src]="'/assets/extended-pdf-viewer/custom-toolbar/ts-reinitialization.md'"> </app-ie11-markdown>
       </mat-tab>
     </mat-tab-group>
   </mat-card>
 </div>
 
-<mat-card class="distance-16 mat-elevation-z8 use-available-height">
+<mat-card class="mat-elevation-z8 use-available-height" [class.distance16]="!fullscreen">
+  <button mat-button (click)="fullscreen=!fullscreen" style="float:right;height: 24px;line-height: 24px;min-width:24px;padding:0;margin-top:-4px">
+    <svg style="width:24px;height:24px" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z" />
+    </svg>
+  </button>
   <ngx-extended-pdf-viewer *ngIf="showPdfViewer"
     [customFindbarInputArea]="theme === 'findbar' ? customFindbarInputArea : undefined"
     [customFindbarButtons]="theme === 'findbar' ? customFindbarButtons : undefined"
@@ -51,6 +57,7 @@
     [textLayer]="true"
     [zoom]="zoom"
     [showZoomButtons]="theme != 'floating'"
+    [showFreeFloatingBar]="showFreeFloatingBar"
   >
   </ngx-extended-pdf-viewer>
 </mat-card>
@@ -107,7 +114,7 @@
 
 
 <ng-template #additionalButtons>
-  <div id="toolbarViewer" style="background-color:darkblue">
+  <div id="toolbarViewer" style="background-color:rgb(232 246 255)">
     <div id="toolbarViewerLeft">
       <pdf-toggle-sidebar></pdf-toggle-sidebar>
       <div class="toolbarButtonSpacer"></div>
@@ -128,7 +135,7 @@
 </ng-template>
 
 <ng-template #floatingZoombar>
-  <div style="position: absolute;bottom:20px;left:41%;z-index:1;background-color:black;padding:4px;padding-bottom: 8px;border:1px solid lightgray">
+  <div style="position: absolute;bottom:20px;left:41%;z-index:1;background-color:#dbe5e9;padding:4px;padding-bottom: 8px;border:1px solid darkgray">
     <div>
       <pdf-zoom-dropdown class="invisible"></pdf-zoom-dropdown>
 

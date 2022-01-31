@@ -1,9 +1,15 @@
+import { CustomBackgroundComponent } from './custom-background/custom-background.component';
+import { MouseWheelComponent } from './mouse-wheel/mouse-wheel.component';
+import { PasswordsComponent } from './passwords/passwords.component';
 import { NgModule } from '@angular/core';
 
 import { ExtendedPdfViewerRoutingModule } from './extended-pdf-viewer-routing.module';
 import { SimpleComponent } from './simple/simple.component';
 import { SharedModule } from '../shared/shared.module';
-import { NgxExtendedPdfViewerModule } from 'ngx-extended-pdf-viewer';
+import {
+  NgxExtendedPdfViewerModule,
+  pdfDefaultOptions,
+} from 'ngx-extended-pdf-viewer';
 import { AttributesComponent } from './attributes/attributes.component';
 import { Base64Component } from './base64/base64.component';
 import { BlobComponent } from './blob/blob.component';
@@ -52,6 +58,12 @@ import { PresentationComponent } from './presentations/presentations.component';
 import { PrerenderingComponent } from './prerendering/prerendering.component';
 import { TwoWayBindingComponent } from './two-way-binding/two-way-binding.component';
 import { FilteringConsoleLogComponent } from './filtering-console-log/filtering-console-log.component';
+import { TouchEmulator } from '../touch-emulator';
+
+const absoluteCMapUrl = pdfDefaultOptions.cMapUrl().replace('./', '/');
+pdfDefaultOptions.cMapUrl = () => absoluteCMapUrl;
+
+new TouchEmulator();
 
 @NgModule({
   imports: [
@@ -68,6 +80,7 @@ import { FilteringConsoleLogComponent } from './filtering-console-log/filtering-
     ContextmenuComponent,
     DefaultOptionsComponent,
     CustomizationComponent,
+    CustomBackgroundComponent,
     CustomSidebarComponent,
     CustomThumbnailsComponent,
     ExportComponent,
@@ -86,6 +99,7 @@ import { FilteringConsoleLogComponent } from './filtering-console-log/filtering-
     BookModeComponent,
     PdfjsVersionsComponent,
     PrintRangeComponent,
+    PasswordsComponent,
     RangeRequestsComponent,
     ScriptingComponent,
     SignaturesComponent,
@@ -108,7 +122,8 @@ import { FilteringConsoleLogComponent } from './filtering-console-log/filtering-
     PresentationComponent,
     PrerenderingComponent,
     TwoWayBindingComponent,
-    FilteringConsoleLogComponent
+    FilteringConsoleLogComponent,
+    MouseWheelComponent
   ],
 })
 export class ExtendedPdfViewerModule {}
