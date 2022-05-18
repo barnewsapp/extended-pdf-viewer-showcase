@@ -6,8 +6,10 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './export.component.html',
   styleUrls: ['./export.component.css'],
 })
-export class ExportComponent implements OnInit {
+export class ExportComponent {
   public imageDataURL: string | undefined = undefined;
+
+  public background: string | undefined;
 
   public extractedText = 'no text extracted yet';
 
@@ -22,7 +24,7 @@ export class ExportComponent implements OnInit {
 
   public selectedTabIndex = 0;
 
-    private _fullscreen = false;
+  private _fullscreen = false;
 
   public get fullscreen(): boolean {
     return this._fullscreen;
@@ -30,50 +32,47 @@ export class ExportComponent implements OnInit {
 
   public set fullscreen(full: boolean) {
     this._fullscreen = full;
-    setTimeout(() =>
-    this.pdfViewerService.recalculateSize());
+    setTimeout(() => this.pdfViewerService.recalculateSize());
   }
 
   constructor(private pdfViewerService: NgxExtendedPdfViewerService) {
     pdfDefaultOptions.textLayerMode = 1;
   }
 
-  ngOnInit() {}
-
   public missingInput(): boolean {
-    return (!this.scale) && !(this.width) && (!this.height);
+    return !this.scale && !this.width && !this.height;
   }
 
   public widthFilledError(): boolean {
     if (this.width) {
-      return (!!this.height) || (!!this.scale);
+      return !!this.height || !!this.scale;
     }
     return false;
   }
 
   public heightFilledError(): boolean {
     if (this.height) {
-      return (!!this.width) || (!!this.scale);
+      return !!this.width || !!this.scale;
     }
     return false;
   }
 
   public scaleFilledError(): boolean {
     if (this.scale) {
-      return (!!this.height) || (!!this.width);
+      return !!this.height || !!this.width;
     }
     return false;
   }
 
   public exportAsImage(): void {
     this.selectedTabIndex = 2;
-    const scale = {width: this.width, height: this.height, scale: this.scale};
-    (async () => this.showImage(await this.pdfViewerService.getPageAsImage(1, scale)))();
+    const scale = { width: this.width, height: this.height, scale: this.scale };
+    (async () => this.showImage(await this.pdfViewerService.getPageAsImage(1, scale, this.background)))();
   }
 
   public exportAsText(): void {
     this.selectedTabIndex = 3;
-    (async () => this.showText(await this.pdfViewerService.getPageAsText(6)))();
+    (async () => this.showText(await this.pdfViewerService.getPageAsText(1)))();
   }
 
   private showText(text: string): void {

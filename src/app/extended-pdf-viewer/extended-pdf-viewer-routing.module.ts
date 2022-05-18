@@ -53,6 +53,10 @@ import { PrerenderingComponent } from './prerendering/prerendering.component';
 import { TwoWayBindingComponent } from './two-way-binding/two-way-binding.component';
 import { FilteringConsoleLogComponent } from './filtering-console-log/filtering-console-log.component';
 import { NavigationComponent } from './navigation/navigation.component';
+import { IFrameComponent } from './iframe/iframe.component';
+import { SideBySideComponent } from './side-by-side/side-by-side.component';
+import { ThemingComponent } from './theming/theming.component';
+import { ScrollingComponent } from './scrolling/scrolling.component';
 
 const routes: Routes = [
   {
@@ -68,7 +72,7 @@ const routes: Routes = [
   { path: 'contextmenu', component: ContextmenuComponent },
   { path: 'options', component: DefaultOptionsComponent },
   { path: 'customization', component: CustomizationComponent },
-  { path: 'custom-background', component: CustomBackgroundComponent},
+  { path: 'custom-background', component: CustomBackgroundComponent },
   { path: 'custom-print-dialog', component: CustomPrintDialogComponent },
   { path: 'custom-toolbar', component: CustomToolbarComponent },
   { path: 'custom-sidebar', component: CustomSidebarComponent },
@@ -84,6 +88,7 @@ const routes: Routes = [
   { path: 'i18n', component: I18nComponent },
   { path: 'infinite-scroll', component: InfiniteScrollComponent },
   { path: 'book-mode', component: BookModeComponent },
+  { path: 'iframe/:id', component: IFrameComponent },
   { path: 'intro', component: IntroComponent },
   { path: 'hiding-buttons', component: HidingButtonsComponent },
   { path: 'links', component: LinksComponent },
@@ -102,10 +107,13 @@ const routes: Routes = [
   { path: 'prerendering', component: PrerenderingComponent },
   { path: 'range-requests', component: RangeRequestsComponent },
   { path: 'scripting', component: ScriptingComponent },
+  { path: 'scrolling', component: ScrollingComponent },
+  { path: 'side-by-side', component: SideBySideComponent },
   { path: 'signatures', component: SignaturesComponent },
   { path: 'simple', component: SimpleComponent },
   { path: 'smartphone', component: SmartphoneComponent },
   { path: 'textlayer', component: TextlayerComponent },
+  { path: 'theming', component: ThemingComponent },
   { path: 'touch-gestures', component: TouchGesturesComponent },
   { path: 'troubleshooting', component: TroubleshootingComponent },
   { path: 'two-way-binding', component: TwoWayBindingComponent },

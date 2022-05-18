@@ -2,20 +2,16 @@ import { Component } from '@angular/core';
 import { BreakpointObserver } from '@angular/cdk/layout';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {
-  pdfDefaultOptions,
-  PDFNotificationService,
-} from 'ngx-extended-pdf-viewer';
+import { pdfDefaultOptions, PDFNotificationService } from 'ngx-extended-pdf-viewer';
 import { versions } from './versions';
+import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-nav',
   templateUrl: './nav.component.html',
   styleUrls: ['./nav.component.css'],
 })
 export class NavComponent {
-  isHandset$: Observable<boolean> = this.breakpointObserver
-    .observe('(max-width: 1023px)')
-    .pipe(map((result) => result.matches));
+  isHandset$: Observable<boolean> = this.breakpointObserver.observe('(max-width: 1023px)').pipe(map((result) => result.matches));
 
   public version = versions.extendedPdfViewer;
   public library = 'ngx-extended-pdf-viewer';
@@ -27,6 +23,8 @@ export class NavComponent {
   public ngxExtendedPdfViewer = true;
 
   public ng2PdfViewer = false;
+
+  public hideMenu = false;
 
   public set viewer(v: string) {
     if (this._viewer !== v) {
@@ -41,49 +39,51 @@ export class NavComponent {
 
   public pdfjsVersion = '';
 
-  constructor(
-    private breakpointObserver: BreakpointObserver,
-    private notification: PDFNotificationService
-  ) {
+  constructor(private breakpointObserver: BreakpointObserver, private notification: PDFNotificationService, private route: ActivatedRoute) {
+    route.url.subscribe((url) => {
+      this.hideMenu = location.pathname.includes('iframe');
+    });
+
     try {
       this.pdfjsVersion = this.notification.pdfjsVersion;
       this.activateViewer();
     } catch (exception) {
-      alert("Error! " + exception);
+      alert('Error! ' + exception);
     }
-   }
+  }
 
   public switchViewer(): void {
-    if (localStorage) {
-      const previousViewer = localStorage.getItem('showcase.viewer');
-      localStorage.setItem('showcase.viewer', this.viewer);
-      if (
-        previousViewer === 'ng2-pdf-viewer' &&
-        this.viewer !== 'ng2-pdf-viewer'
-      ) {
-        location.pathname = '/extended-pdf-viewer';
-      } else if (
-        previousViewer !== 'ng2-pdf-viewer' &&
-        this.viewer === 'ng2-pdf-viewer'
-      ) {
-        location.pathname = '/ng2-pdf-viewer';
-      } else {
-        location = location; // trigger reload
-      }
-    }
-
-  }
-  public activateViewer(): void {
-    if (localStorage) {
-      if (location.pathname.startsWith('/ng2-pdf-viewer')) {
-        localStorage.setItem('showcase.viewer', 'ng2-pdf-viewer');
-      }
-      if (location.pathname.startsWith('/extended-pdf-viewer')) {
-        if (localStorage.getItem('showcase.viewer') === 'ng2-pdf-viewer') {
-          localStorage.setItem('showcase.viewer', 'ngx-extended-pdf-viewer');
+    try {
+      if (localStorage) {
+        const previousViewer = localStorage.getItem('showcase.viewer');
+        localStorage.setItem('showcase.viewer', this.viewer);
+        if (previousViewer === 'ng2-pdf-viewer' && this.viewer !== 'ng2-pdf-viewer') {
+          location.pathname = '/extended-pdf-viewer';
+        } else if (previousViewer !== 'ng2-pdf-viewer' && this.viewer === 'ng2-pdf-viewer') {
+          location.pathname = '/ng2-pdf-viewer';
+        } else {
+          location = location; // trigger reload
         }
       }
-      this._viewer = localStorage.getItem('showcase.viewer');
+    } catch (safariSecurityException) {
+      // localStorage is not available on Safari
+    }
+  }
+  public activateViewer(): void {
+    try {
+      if (localStorage) {
+        if (location.pathname.startsWith('/ng2-pdf-viewer')) {
+          localStorage.setItem('showcase.viewer', 'ng2-pdf-viewer');
+        }
+        if (location.pathname.startsWith('/extended-pdf-viewer')) {
+          if (localStorage.getItem('showcase.viewer') === 'ng2-pdf-viewer') {
+            localStorage.setItem('showcase.viewer', 'ngx-extended-pdf-viewer');
+          }
+        }
+        this._viewer = localStorage.getItem('showcase.viewer');
+      }
+    } catch (safariSecurityException) {
+      // localStorage is not available on Safari
     }
     if (!this._viewer) {
       this._viewer = 'ngx-extended-pdf-viewer';
@@ -106,10 +106,9 @@ export class NavComponent {
   private determinePdfJsVersion(): void {
     setTimeout(() => {
       if ((window as any).pdfjsLib) {
-        this.pdfjsVersion =
-          ', pdf.js ' + (window as any).pdfjsLib.version + ',';
+        this.pdfjsVersion = ', pdf.js ' + (window as any).pdfjsLib.version + ',';
       } else {
-        this.pdfjsVersion =''; // maybe we're currently showing one of the pages without example file
+        this.pdfjsVersion = ''; // maybe we're currently showing one of the pages without example file
         this.determinePdfJsVersion();
       }
     }, 100);
