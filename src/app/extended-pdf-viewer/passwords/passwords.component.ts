@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { IPDFViewerApplication, NgxExtendedPdfViewerService, PasswordPrompt, pdfDefaultOptions } from 'ngx-extended-pdf-viewer';
+import { isLocalhost } from '../common/utilities';
 import { CustomPasswordPrompt } from './custom-password-prompt';
 
 @Component({
@@ -16,6 +17,8 @@ export class PasswordsComponent {
   private _choice: string | undefined = undefined;
 
   private originalPasswordPrompt!: PasswordPrompt;
+
+  public isLocalhost = isLocalhost();
 
   public get choice() {
     return this._choice;
@@ -39,7 +42,6 @@ export class PasswordsComponent {
         PDFViewerApplication.passwordPrompt = this.originalPasswordPrompt;
       }
     }
-    console.log(this.password);
     setTimeout(() => {
       this.src = '/assets/pdfs/GraalVM-password-protected.pdf';
     },200);
