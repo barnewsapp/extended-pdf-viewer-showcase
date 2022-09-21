@@ -62,9 +62,8 @@ import { IFrameComponent } from './iframe/iframe.component';
 import { ThemingComponent } from './theming/theming.component';
 import { ScrollingComponent } from './scrolling/scrolling.component';
 import { BrowserSupportComponent } from './browser-support/browser-support.component';
-
-const absoluteCMapUrl = pdfDefaultOptions.cMapUrl().replace('./', '/');
-pdfDefaultOptions.cMapUrl = () => absoluteCMapUrl;
+import { TouchGesturesComponentAdvanced } from './touch-gestures-advanced/touch-gestures-advanced.component';
+import { CustomRenderComponent } from './attributes/custom-render-component';
 
 new TouchEmulator();
 
@@ -79,6 +78,7 @@ new TouchEmulator();
     ChangelogComponent,
     ContextmenuComponent,
     DefaultOptionsComponent,
+    CustomRenderComponent,
     CustomizationComponent,
     CustomBackgroundComponent,
     CustomSidebarComponent,
@@ -108,6 +108,7 @@ new TouchEmulator();
     SmartphoneComponent,
     TextlayerComponent,
     TouchGesturesComponent,
+    TouchGesturesComponentAdvanced,
     TroubleshootingComponent,
     ZoomComponent,
     CustomPrintDialogComponent,
